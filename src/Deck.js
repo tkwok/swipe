@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { 
-    View, 
+    View,
+    Text,
     Animated,
     PanResponder,
     Dimensions
@@ -96,14 +97,19 @@ export default class Deck extends Component {
             if (i === this.state.index) {
                 return (
                     <Animated.View
-                        key={i}
-                        style={this.getCardStyle()}
+                        key={item.id}
+                        style={[this.getCardStyle(), styles.cardStyle, { zIndex: i * -1 }]}
                         {...this.state.panResponder.panHandlers}>
                         {this.props.renderCard(item)}
                     </Animated.View>
                 )
-            }
-            return this.props.renderCard(item);
+            } 
+
+            return (
+                <View key={item.id} style={[styles.cardStyle, { zIndex: i * -1 }]}>
+                    {this.props.renderCard(item)}
+                </View>
+            );
         });
     }
 
@@ -116,3 +122,10 @@ export default class Deck extends Component {
         );
     }
 }
+
+const styles = {
+    cardStyle: {
+        position: 'absolute',
+        width: SCREEN_WIDTH
+    }
+};
